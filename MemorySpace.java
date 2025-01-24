@@ -111,9 +111,12 @@ public class MemorySpace {
 	 */
 	public void free(int address) {
 
+		if (freeList.getFirst() == null) {
+			throw new IllegalArgumentException("The free list is empty");
+		}
 		Node current = allocatedList.getFirst();
 		if (current == null) {
-			return;
+			throw new IllegalArgumentException("The allocated list is empty");
 		}
 		while (current != null) {
 			MemoryBlock block = current.block;
@@ -124,7 +127,7 @@ public class MemorySpace {
 			}
 			current = current.next;
 		}
-
+		throw new IllegalArgumentException("The block is not in the allocated list");
 	}
 
 	/**
@@ -144,21 +147,24 @@ public class MemorySpace {
 	 */
 	public void defrag() {
 
-		Node current = freeList.getFirst();
-		while (current != null) {
-			MemoryBlock block = current.block;
-			Node next = current.next;
-
-			if (next != null) {
-				MemoryBlock nextBlock = next.block;
-
-				if (block.baseAddress + block.length == nextBlock.baseAddress) {
-					block.length += nextBlock.length;
-					freeList.remove(nextBlock);
-				}
-			}
-			current = current.next;
+		if (freeList.getSize() <= 1) {
+			return;
 		}
 
+		freeList.sort();
+		Node current = freeList.getFirst();
+		while (current != null && current.next != null) {
+			MemoryBlock currentBlock = current.block;
+			MemoryBlock nextBlock = current.next.block;
+
+			if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
+
+				currentBlock.length += nextBlock.length;
+				freeList.remove(current.next);
+			} else {
+
+				current = current.next;
+			}
+		}
 	}
 }
