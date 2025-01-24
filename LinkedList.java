@@ -208,16 +208,20 @@ public class LinkedList {
 	 *             the node that will be removed from this list
 	 */
 	public void remove(Node node) {
-		if (size == 0) {
+		if (size == 0 || node == null) {
 			return;
 		}
-		Node current = first;
+
 		if (first == node) {
 			first = first.next;
+			if (first == null) {
+				last = null;
+			}
 			size--;
 			return;
 		}
 
+		Node current = first;
 		for (int i = 0; i < size; i++) {
 			if (current.next == node) {
 				current.next = node.next;
