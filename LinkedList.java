@@ -208,9 +208,9 @@ public class LinkedList {
 	 *             the node that will be removed from this list
 	 */
 	public void remove(Node node) {
-		if (size == 0 || node == null) {
-			throw new IllegalArgumentException(
-					"ERROR NullPointerException!");
+
+		if (node == null) {
+			throw new NullPointerException();
 		}
 
 		if (first == node) {
@@ -258,6 +258,9 @@ public class LinkedList {
 				last = null;
 			}
 			size--;
+			if (size == 0) {
+				last = null;
+			}
 			return;
 		}
 		Node current = first;
@@ -265,10 +268,10 @@ public class LinkedList {
 			current = current.next;
 		}
 		current.next = current.next.next;
+		size--;
 		if (current.next == null) {
 			last = current;
 		}
-		size--;
 
 	}
 
@@ -280,27 +283,32 @@ public class LinkedList {
 	 *                                  if the given memory block is not in this
 	 *                                  list
 	 */
-	public void remove(MemoryBlock block) {
-
-		Node current = first;
-		if (current == null) {
-			throw new IllegalArgumentException("The given memory block is not in this list");
+	public void remove(MemoryBlock block) {111
+		if (block == null) {
+			throw new IllegalArgumentException("index must be between 0 and size");
 		}
-		if (first.block.equals(block)) {
+		if (first != null && first.block.equals(block)) {
 			first = first.next;
 			size--;
+			if (size == 0) {2
+				last = null;
+			}
 			return;
 		}
 
-		for (int i = 0; i < size; i++) {
+		Node current = first;
+		while (current != null && current.next != null) {
 			if (current.next.block.equals(block)) {
 				current.next = current.next.next;
 				size--;
+				if (current.next == null) {
+					last = current;
+				}
 				return;
 			}
 			current = current.next;
 		}
-		throw new IllegalArgumentException("The given memory block is not in this list");
+		throw new IllegalArgumentException("index must be between 0 and size");
 	}
 
 	/**
@@ -315,7 +323,13 @@ public class LinkedList {
 	 * A textual representation of this list, for debugging.
 	 */
 	public String toString() {
-		//// Replace the following statement with your code
-		return "{" + first + "" + last + "" + size + "}";
+		String str = "";
+		Node current = first;
+		for (int i = 0; i < size; i++) {
+			str += current.block.toString() + " ";
+			current = current.next;
+		}
+		return str;
+
 	}
 }

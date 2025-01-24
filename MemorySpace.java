@@ -79,7 +79,7 @@ public class MemorySpace {
 
 			if (block.length == length) {
 				allocatedList.addLast(block);
-				freeList.remove(block);
+				freeList.remove(current);
 				return block.baseAddress;
 
 			}
@@ -89,6 +89,10 @@ public class MemorySpace {
 				allocatedList.addLast(newBlock);
 				block.baseAddress += length;
 				block.length -= length;
+
+				if (block.length == 0) {
+					freeList.remove(current);
+				}
 				return newBlock.baseAddress;
 			}
 			current = current.next;
