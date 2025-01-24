@@ -250,17 +250,23 @@ public class LinkedList {
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		}
-		Node current = first;
+
 		if (index == 0) {
 			first = first.next;
+			if (first == null) {
+				last = null;
+			}
 			size--;
 			return;
 		}
-
+		Node current = first;
 		for (int i = 0; i < index - 1; i++) {
 			current = current.next;
 		}
 		current.next = current.next.next;
+		if (current.next == null) {
+			last = current;
+		}
 		size--;
 
 	}
