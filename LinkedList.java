@@ -222,11 +222,14 @@ public class LinkedList {
 		}
 
 		Node current = first;
-		for (int i = 0; i < size; i++) {
+		while (current.next != null) {
 			if (current.next == node) {
-				current.next = node.next;
+				current.next = current.next.next;
+				if (current.next == null) {
+					last = current;
+				}
 				size--;
-				break;
+				return;
 			}
 			current = current.next;
 		}
