@@ -54,7 +54,7 @@ public class LinkedList {
 	 * @return the node at the given index
 	 */
 	public Node getNode(int index) {
-		if (index < 0 || index > size) {
+		if (index < 0 || index >= size) {
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		} else {
@@ -132,6 +132,7 @@ public class LinkedList {
 			last.next = newNode;
 			last = newNode;
 		}
+		size++;
 	}
 
 	/**
@@ -151,6 +152,7 @@ public class LinkedList {
 			newNode.next = first;
 			first = newNode;
 		}
+		size++;
 	}
 
 	/**
@@ -165,8 +167,16 @@ public class LinkedList {
 	 */
 	public MemoryBlock getBlock(int index) {
 		//// Replace the following statement with your code
+		if (index < 0 || index >= size) {
+			throw new IllegalArgumentException(
+					"index must be between 0 and size");
+		}
 		Node current = first;
 		for (int i = 0; i < index; i++) {
+			if (current.next == null) {
+				return null;
+			}
+
 			current = current.next;
 		}
 		return current.block;
@@ -181,12 +191,12 @@ public class LinkedList {
 	 */
 	public int indexOf(MemoryBlock block) {
 
-		Node currnte = first;
+		Node current = first;
 		for (int i = 0; i < size; i++) {
-			if (currnte.block.equals(block)) {
+			if (current.block.equals(block)) {
 				return i;
 			}
-			currnte = currnte.next;
+			current = current.next;
 		}
 		return -1;
 	}
