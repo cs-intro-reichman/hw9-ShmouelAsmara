@@ -283,14 +283,14 @@ public class LinkedList {
 	 *                                  if the given memory block is not in this
 	 *                                  list
 	 */
-	public void remove(MemoryBlock block) {111
+	public void remove(MemoryBlock block) {
 		if (block == null) {
 			throw new IllegalArgumentException("index must be between 0 and size");
 		}
 		if (first != null && first.block.equals(block)) {
 			first = first.next;
 			size--;
-			if (size == 0) {2
+			if (size == 0) {
 				last = null;
 			}
 			return;
