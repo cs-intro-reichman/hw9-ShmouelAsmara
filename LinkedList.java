@@ -336,18 +336,19 @@ public class LinkedList {
 	public void sort() {
 		Node current = first;
 		Node index = null;
-		MemoryBlock temp;
+		MemoryBlock tempo;
 
 		if (first == null) {
 			return;
+
 		} else {
 			while (current != null) {
 				index = current.next;
 				while (index != null) {
 					if (current.block.baseAddress > index.block.baseAddress) {
-						temp = current.block;
+						tempo = current.block;
 						current.block = index.block;
-						index.block = temp;
+						index.block = tempo;
 					}
 					index = index.next;
 				}

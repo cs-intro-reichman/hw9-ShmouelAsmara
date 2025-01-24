@@ -110,24 +110,19 @@ public class MemorySpace {
 	 *                    the starting address of the block to freeList
 	 */
 	public void free(int address) {
-
-		if (freeList.getFirst() == null) {
-			throw new IllegalArgumentException("The free list is empty");
-		}
 		Node current = allocatedList.getFirst();
-		if (current == null) {
-			throw new IllegalArgumentException("The allocated list is empty");
-		}
-		while (current != null) {
-			MemoryBlock block = current.block;
-			if (block.baseAddress == address) {
-				freeList.addLast(block);
-				allocatedList.remove(block);
-				return;
+		if (allocatedList.getSize() == 0) {
+			throw new IllegalArgumentException(
+					"index must be between 0 and size");
+		} else {
+			while (current.block.baseAddress != address && current != allocatedList.getLast()) {
+				current = current.next;
 			}
-			current = current.next;
+			if (current.block.baseAddress == address) {
+				allocatedList.remove(current.block);
+				freeList.addLast(current.block);
+			}
 		}
-		throw new IllegalArgumentException("The block is not in the allocated list");
 	}
 
 	/**
@@ -149,6 +144,7 @@ public class MemorySpace {
 
 		if (freeList.getSize() <= 1) {
 			return;
+
 		}
 
 		freeList.sort();
