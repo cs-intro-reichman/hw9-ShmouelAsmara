@@ -209,7 +209,8 @@ public class LinkedList {
 	 */
 	public void remove(Node node) {
 		if (size == 0 || node == null) {
-			return;
+			throw new IllegalArgumentException(
+					"ERROR NullPointerException!");
 		}
 
 		if (first == node) {
